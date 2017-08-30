@@ -33,6 +33,8 @@ from userinterface import *
 # Todo: make it run on every OS  Pygame supports
 
 
+# Todo: decide on Python 2 or Python 3
+
 
 
 ANIM_INPROGRESS = 1
