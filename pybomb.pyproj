@@ -21,14 +21,16 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="aim.wav" />
     <Content Include="cloud01.png" />
     <Content Include="fetchedpic.png" />
     <Content Include="jump_math_trajectory.JPG" />
+    <Content Include="shot.wav" />
+    <Content Include="small_explosion.wav" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bomb.py" />
     <Compile Include="bombglobals.py" />
-    <Compile Include="bouncingball.py" />
     <Compile Include="drawtext_example.py" />
     <Compile Include="euclid.py" />
     <Compile Include="tank.py" />

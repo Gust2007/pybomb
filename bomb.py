@@ -171,6 +171,7 @@ class PyBomb():
         pygame.init()
         BBGlobals.Screen = pygame.display.set_mode((BBGlobals.WindowWidth, BBGlobals.WindowHeight))
 
+
         pygame.display.set_caption("PyBomb - Fun the old way !")
 
         self.Terrain = Terrain(BBGlobals.Screen, BBGlobals.WindowWidth, BBGlobals.WindowHeight)
@@ -189,11 +190,11 @@ class PyBomb():
         self.UI = GameUI(BBGlobals.Screen, BBGlobals.WindowWidth, BBGlobals.WindowHeight)
         
         # init sound
-#        pygame.mixer.init(22050,-16,2,2048)     # these values are from the internet....
-#        self.ExplosionSound = loadSound("small_explosion.wav")
-#        self.ExplosionSound.set_volume(1.0)
-#        self.AimSound = loadSound("aim.wav")
-#        self.AimSound.set_volume(1.0)
+        pygame.mixer.init(22050,-16,2,2048)     # these values are from the internet....
+        self.ExplosionSound = loadSound("small_explosion.wav")
+        self.ExplosionSound.set_volume(1.0)
+        self.AimSound = loadSound("aim.wav")
+        self.AimSound.set_volume(1.0)
         
         # init fonts
         self.FPSFont = pygame.font.Font(None, 20)
@@ -261,7 +262,7 @@ class PyBomb():
                 ImpactPos = Bullet.getPos()
                 ImpactExp = ImpactExplosion(0, self.Terrain.Surface, ImpactPos)
                 self.Animations.append(ImpactExp)
-#                self.ExplosionSound.play()
+                self.ExplosionSound.play()
             else:
                 NewBullets.append(Bullet)
                 Bullet.draw()
@@ -295,13 +296,13 @@ class PyBomb():
         # control angle of cannon
         if (keystate[pygame.K_LEFT] and self.TimeUntilNextAimOp <= 0):
             BBGlobals.Tanks[BBGlobals.CurrentTank].aimLeft()
-#            self.AimSound.play()
+            self.AimSound.play()
             self.TimeUntilNextAimOp += 30   # ms
             
             
         if (keystate[pygame.K_RIGHT] and self.TimeUntilNextAimOp <= 0):
             BBGlobals.Tanks[BBGlobals.CurrentTank].aimRight()
-#            self.AimSound.play()
+            self.AimSound.play()
             self.TimeUntilNextAimOp += 30   # ms
             
 
