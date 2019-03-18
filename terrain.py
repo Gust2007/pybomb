@@ -48,7 +48,7 @@ class CrumbleLine():
         OldPixelColor = None
         NewLineSection = None
         
-        for y in xrange(self.YCoord, 0, -1):
+        for y in range(self.YCoord, 0, -1):
             try:
                 PixelColor = self.Surface.get_at((self.XCoord, y))
                 
@@ -63,7 +63,7 @@ class CrumbleLine():
                     NewLineSection.LowerY = y
                     
                     OldPixelColor = PixelColor
-            except IndexError, Msg:
+            except IndexError as Msg:
                 pass
                 # print("IndexError in Terrain::generateSections - self.XCoord: {}, y: {}").format(self.XCoord, y)
 
@@ -84,7 +84,7 @@ class CrumbleLine():
             self.Sections[0].UpperY += 1
             
             # all other sections have to move 1 px down
-            for i in xrange(1, len(self.Sections)):
+            for i in range(1, len(self.Sections)):
                 self.Sections[i].LowerY += 1
                 self.Sections[i].UpperY += 1
 
@@ -131,7 +131,7 @@ class Terrain():
   
         for DirtyRect in self.CrumbleRectangles:
             # generate crumblelines for every xcoord in a dirtyrect
-            for x in xrange(DirtyRect.left, DirtyRect.right):
+            for x in range(DirtyRect.left, DirtyRect.right):
                 NewCrumbleLine = CrumbleLine(x, DirtyRect.bottom, self.Surface)
                 NewCrumbleLine.generateSections()
                 if (NewCrumbleLine.getNumSections() >= 2):
@@ -181,7 +181,7 @@ class Terrain():
         del self.TerrainLines[:]
         self.TerrainLines = [(Line(Point(0, random.randint(self.TopMargin, self.Height)), 
             Point(self.Width, random.randint(self.TopMargin, self.Height))))]
-        for x in xrange(0, self.NumSplits):
+        for x in range(0, self.NumSplits):
             self.TerrainLines = self.splitLines()
         self.Surface.fill(Black)
         self.drawLines()
@@ -227,7 +227,7 @@ class Terrain():
             m = (CurrentLine.EndPoint.y - CurrentLine.StartPoint.y) / (CurrentLine.EndPoint.x - CurrentLine.StartPoint.x)
             n = CurrentLine.StartPoint.y - m * CurrentLine.StartPoint.x
             
-            for x in xrange(int(CurrentLine.StartPoint.x), int(CurrentLine.EndPoint.x)):
+            for x in range(int(CurrentLine.StartPoint.x), int(CurrentLine.EndPoint.x)):
                 y = m * x + n
                 pygame.draw.line(self.Surface, DarkGreen, (x, y), (x, self.Height), 1)
 

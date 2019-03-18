@@ -99,7 +99,7 @@ class Tank():
             if (PixelColor.g < 128):
                 self.PosRect.move_ip(0, Amount)
                 self.CollideRect.center = self.PosRect.center
-        except IndexError, Msg:
+        except IndexError as Msg:
             print("IndexError in Tank::moveDown - self.PosRect.midbottom: {}").format(self.PosRect.midbottom)
 
 

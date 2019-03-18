@@ -4,9 +4,10 @@
 
 # bomb clone, to remember the good old time and to really learn python
 # bomb.py
-
-import sys, pygame
-import random, math
+import sys
+import pygame
+import random
+import math
 from bombglobals import *
 from terrain import *
 from tank import *
@@ -21,20 +22,22 @@ from userinterface import *
 
 
 # Known Bugs:
-# crumble algorithm: whenever the terrain reaches to the top of the window, terrain is not crumbling correctly
+# crumble algorithm: whenever the terrain reaches to the top of the window,
+# terrain is not crumbling correctly
 
 
 # Todo: rename global variables to g_BlaBla
 # Todo: each class should get its own file/module
-# Todo: Line 307: very important, otherwise a user can shoot twice or more # and not crumbleinprogress !!
-# Todo: Refactoring of advanceGame and drawGame: 
-#       currently mixed calls for advancing and drawing stuff (we want real MVC architecture)
+# Todo: Line 307: very important, otherwise a user can shoot twice or more #
+# and not crumbleinprogress !!
+# Todo: Refactoring of advanceGame and drawGame:
+#       currently mixed calls for advancing and drawing stuff (we want real MVC
+#       architecture)
 # Todo: use the euclid.py module in this directory
-# Todo: make it run on every OS  Pygame supports
+# Todo: make it run on every OS Pygame supports
 
 
 # Todo: decide on Python 2 or Python 3
-
 
 
 ANIM_INPROGRESS = 1
@@ -143,7 +146,7 @@ class Bullet():
                     Tank.doDamage((self.XPos, self.YPos))
                 
         except:
-            print ("Exception {} : {}").format(sys.exc_type, sys.exc_value)
+            print("Exception {} : {}").format(sys.exc_type, sys.exc_value)
 #            print "Bullet collided with window boundaries"
             self.Collided = True
 
@@ -167,7 +170,6 @@ class PyBomb():
         self.TimeUntilNextAimOp = 0
         self.Terrain = None
 
-        
         pygame.init()
         BBGlobals.Screen = pygame.display.set_mode((BBGlobals.WindowWidth, BBGlobals.WindowHeight))
 
@@ -190,10 +192,10 @@ class PyBomb():
         self.UI = GameUI(BBGlobals.Screen, BBGlobals.WindowWidth, BBGlobals.WindowHeight)
         
         # init sound
-        pygame.mixer.init(22050,-16,2,2048)     # these values are from the internet....
+        pygame.mixer.init() 
         self.ExplosionSound = loadSound("small_explosion.wav")
         self.ExplosionSound.set_volume(1.0)
-        self.AimSound = loadSound("aim.wav")
+        self.AimSound = loadSound("newaim.wav")
         self.AimSound.set_volume(1.0)
         
         # init fonts
@@ -224,13 +226,20 @@ class PyBomb():
 
 
     def __drawDebugInfo(self):
-#        BBGlobals.Screen.blit(self.DebugFont.render("#Bullets: " + str(len(self.Bullets)), 0, White), (0, 20))
+#        BBGlobals.Screen.blit(self.DebugFont.render("#Bullets: " +
+#        str(len(self.Bullets)), 0, White), (0, 20))
         BBGlobals.Screen.blit(self.DebugFont.render("Gravity: " + str(BBGlobals.Gravity), 0, White), (0, 80))
-#        BBGlobals.Screen.blit(self.DebugFont.render("Velocity: " + str(BBGlobals.Velocity), 0, White), (0, 40))
-#        BBGlobals.Screen.blit(self.DebugFont.render("Wind: " + str(BBGlobals.Wind), 0, White), (0, 90))
-#        BBGlobals.Screen.blit(self.DebugFont.render("CurrentTank: " + str(BBGlobals.CurrentTank), 0, White), (0, 60))
-#        BBGlobals.Screen.blit(self.DebugFont.render("CurrentAngle: " + str(BBGlobals.Tanks[BBGlobals.CurrentTank].getCannonAngle()), 0, White), (0, 70))
-#        BBGlobals.Screen.blit(self.DebugFont.render("#CrumbleLines: " + str(len(self.Terrain.CrumbleLines)), 0, White), (0, 100))
+#        BBGlobals.Screen.blit(self.DebugFont.render("Velocity: " +
+#        str(BBGlobals.Velocity), 0, White), (0, 40))
+#        BBGlobals.Screen.blit(self.DebugFont.render("Wind: " +
+#        str(BBGlobals.Wind), 0, White), (0, 90))
+#        BBGlobals.Screen.blit(self.DebugFont.render("CurrentTank: " +
+#        str(BBGlobals.CurrentTank), 0, White), (0, 60))
+#        BBGlobals.Screen.blit(self.DebugFont.render("CurrentAngle: " +
+#        str(BBGlobals.Tanks[BBGlobals.CurrentTank].getCannonAngle()), 0,
+#        White), (0, 70))
+#        BBGlobals.Screen.blit(self.DebugFont.render("#CrumbleLines: " +
+#        str(len(self.Terrain.CrumbleLines)), 0, White), (0, 100))
 
 
 
@@ -336,7 +345,7 @@ class PyBomb():
 
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
-                print "pygame.QUIT event"
+                print("pygame.QUIT event")
                 sys.exit()
                 
             if (event.type == pygame.KEYDOWN):
@@ -391,7 +400,7 @@ class PyBomb():
 
 
 def main():
-    print ("This is a rewrite of bomb(Tank wars 3.0) in python and pygame.")
+    print("This is a rewrite of bomb(Tank wars 3.0) in python and pygame.")
     PyBombGame = PyBomb()
     PyBombGame.GameLoop()
     pygame.quit()
