@@ -114,7 +114,6 @@ class Terrain():
     def __init__(self, Surface, Width, Height):
         self.TerrainLines = []
         self.Surface = Surface.copy()   # this is a copy of the main screen surface
-        self.SurfaceArray = None
         self.Damping = MIDPOINT_DAMPING
         self.NumSplits = 8   # corresponds to 256 lines 2^8
         self.Width = Width

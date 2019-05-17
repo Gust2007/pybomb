@@ -29,6 +29,9 @@
   <ItemGroup>
     <Compile Include="bomb.py" />
     <Compile Include="bombglobals.py" />
+    <Compile Include="bullet.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="drawtext_example.py" />
     <Compile Include="euclid.py" />
     <Compile Include="tank.py" />

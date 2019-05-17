@@ -8,10 +8,12 @@ import sys
 import pygame
 import random
 import math
+import os
 from bombglobals import *
 from terrain import *
 from tank import *
 from userinterface import *
+from Bullet import *
 
 
 # GameTodos
@@ -95,72 +97,6 @@ class ImpactExplosion(Animation):
 
 
 
-#--------------------------------------------------------------------------------------------------------------------
-class Bullet():
-    def __init__(self, Surface, StartPosition, ShotAngle, Velocity):
-        self.Surface = Surface
-        self.StartX = StartPosition[0]
-        self.StartY = StartPosition[1]
-        self.XPos = StartPosition[0]
-        self.YPos = StartPosition[1]
-        self.ShotAngle = math.radians(ShotAngle)
-        self.Time = 0
-        self.Height = 0
-        self.Distance = 0
-        self.Collided = False
-        self.Color = White
-        self.Velocity = Velocity
-    
-        
-    def draw(self):
-        if (self.Collided == True):
-            self.Color = Red
-        pygame.draw.circle(self.Surface, self.Color, (int(self.XPos), int(self.YPos)), 2)
-
-    
-    def isCollided(self):
-        return self.Collided
-    
-    def getPos(self):
-        return (int(self.XPos), int(self.YPos))
-
-    def advance(self, ElapsedTime):
-        self.Time += ElapsedTime / 100.0
-
-        self.Distance = self.Velocity * math.cos(self.ShotAngle) * self.Time - (BBGlobals.Wind * math.pow(self.Time, 2)) / 2.0
-        self.Height = (self.Velocity * math.sin(self.ShotAngle) * self.Time) - (BBGlobals.Gravity * math.pow(self.Time, 2)) / 2.0
-            
-        self.XPos = int(self.StartX + self.Distance)
-        self.YPos = int(self.StartY - self.Height)
-        
-        try:
-            # test for bullet collision of surface
-            PixelColor = self.Surface.get_at((self.XPos, self.YPos))
-            if (PixelColor == DarkGreen):
-                self.Collided = True
-                
-            # and test for bullet collision with a tank
-            for Tank in BBGlobals.Tanks:
-                if (Tank.collideBullet((self.XPos, self.YPos)) == True):
-                    self.Collided = True
-                    Tank.doDamage((self.XPos, self.YPos))
-                
-        except:
-            print("Exception {} : {}").format(sys.exc_type, sys.exc_value)
-#            print "Bullet collided with window boundaries"
-            self.Collided = True
-
-
-
-
-
-
-
-
-
-
-
-
 
 #--------------------------------------------------------------------------------------------------------------------
 class PyBomb():
@@ -208,10 +144,7 @@ class PyBomb():
 
 
     def blitTerrain(self):
-        if (self.Terrain.SurfaceArray is not None):
-            pygame.surfarray.blit_array(BBGlobals.Screen, self.Terrain.SurfaceArray)
-        else:
-            BBGlobals.Screen.blit(self.Terrain.Surface, (0,0))
+        BBGlobals.Screen.blit(self.Terrain.Surface, (0,0))
         
 
 
@@ -252,17 +185,6 @@ class PyBomb():
                 BBGlobals.GameState = PLAYERSTURN
                 BBGlobals.nextTankActive()
 
-
-
-    def __drawGame(self, ElapsedTime):
-        BBGlobals.Screen.fill(Black)
-        self.crumbleTerrain()
-        self.blitTerrain()
-        
-        # iterate over tanks to let them draw themselves
-        for Tank in BBGlobals.Tanks:
-            Tank.draw()
-
         # handle bullets
         NewBullets = []
         for Bullet in self.Bullets:
@@ -278,6 +200,17 @@ class PyBomb():
                 
         self.Bullets = NewBullets
 
+
+
+
+    def __drawGame(self, ElapsedTime):
+        BBGlobals.Screen.fill(Black)
+        self.crumbleTerrain()
+        self.blitTerrain()
+        
+        # iterate over tanks to let them draw themselves
+        for Tank in BBGlobals.Tanks:
+            Tank.draw()
 
         # handle animations
         NewAnims = []
@@ -346,7 +279,8 @@ class PyBomb():
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 print("pygame.QUIT event")
-                sys.exit()
+                return False
+
                 
             if (event.type == pygame.KEYDOWN):
                 if (event.key == pygame.K_ESCAPE):
@@ -368,7 +302,7 @@ class PyBomb():
             if (event.type == pygame.MOUSEBUTTONDOWN):
                 if (event.button == LEFTBUTTON):
                     PixelColor = BBGlobals.Screen.get_at(event.pos)
-                    print("Pixel: Pos: {}, Color: {}").format(event.pos, PixelColor)
+                    print(("Pixel: Pos: {}, Color: {}").format(event.pos, PixelColor))
                     
                 if (event.button == RIGHTBUTTON):
                     self.Terrain.generateTerrain()
@@ -383,16 +317,17 @@ class PyBomb():
         Running = True
         
         while Running:
-            Running = self.__eventTick(TimerClock.get_time())
+            elapsedMilliseconds = TimerClock.get_time()
+            Running = self.__eventTick(elapsedMilliseconds)
 
-            self.__drawGame(TimerClock.get_time())
-            self.__advanceGame(TimerClock.get_time())
+            self.__drawGame(elapsedMilliseconds)
+            self.__advanceGame(elapsedMilliseconds)
             
-            TimerClock.tick()
             self.__drawFPS(TimerClock.get_fps())
-            
             self.__drawDebugInfo()
             pygame.display.flip()
+
+            TimerClock.tick()
 
 
 
